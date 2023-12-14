@@ -3,11 +3,11 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const postTQuery = require('./Modules/tQueries');
+const getBaidu = require('./Modules/baiduQueries');
+const postTFinal =  require('./Modules/tFinal')
 // const mongoose = require('mongoose');
-const postTQuery = require('./Modules/TQueries')
-const searchHandler = require('./Modules/searchHandler')
-
-const getTQuery = require('./Modules/TQueries')
+const searchHandler = require('./Modules/searchHandler');
 
 const app = express();
 app.use(cors());
@@ -26,6 +26,12 @@ app.get(('/', (req, res, next) => res.status(200).send('Default route working'))
 
 //POST request for Translated Query from ChatGPT
 app.post('/tquery', postTQuery);
+
+//GET request from Baidu API
+app.get('/baidu', getBaidu);
+
+//POST request for Translated Query from ChatGPT
+app.post('/tfinal', postTFinal);
 
 //Communication with MongoDB for past searches
 // app.get('/searches', searchHandler.getSearches);
