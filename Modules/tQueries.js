@@ -4,9 +4,10 @@ const axios = require('axios');
 const cache = require('./cache');
 
 function postTQuery(req, res, next){
-  const tranquery =  `Translate ${req.query.tranquery} just to simplified mandarin, no pronunciation guide`;
+    // postTQuery to be called with state string
+  const tranquery =  req.query.tranquery;
   const key = 'Tqueries ' + tranquery;
-  const url = 'https://api.openai.com/v1/chat/completions' 
+  const url = 'https://translation.googleapis.com/language/translate/v2';
 
   if (cache[key] && (Date.now() - cache[key].timestamp < 604800000)){
     console.log('Cache hit - pulling in cache data');
@@ -16,22 +17,20 @@ function postTQuery(req, res, next){
     console.log('Cache miss - submitting new request');
     axios.post(url, 
       {
-        "model": "gpt-3.5-turbo",
-        "messages": [
-          {
-            "role": "user",
-            "content": tranquery
-          }
-        ],
-        "temperature": 0.7
-      },
+        "q": [tranquery],
+        "source": "zh-CN",
+        "target": "en",
+        "format": "text"
+      }
+      ,
       {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + `${process.env.ChatGPT_CONN}`
+        'Authorization': 'Bearer ' + `${process.env.GCLOUD}`,
+        'x-goog-user-project': `${process.env.GOOGLE_PROJECT_ID}`,
+        'Content-Type': 'application/json; charset=utf-8'
       }
       })
-      .then(response => response.data.choices.map(tdquery => new Chquery(tdquery)))
+      .then(response => response.data.data.translations.map(tdquery => new Chquery(tdquery)))
       .then(formattedData => {
         cache[key] = {};
         cache[key].data = formattedData;
@@ -44,7 +43,7 @@ function postTQuery(req, res, next){
 
 class Chquery{
   constructor(translation){
-    this.content = translation.message.content;
+    this.query = translation.translatedText;
   }
 }
 

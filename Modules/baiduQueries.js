@@ -3,10 +3,9 @@
 const axios = require('axios');
 
 function getBaidu(req, res, next){
-    // engine to be replaced with state string
-  const engine = 'baidu';
-  // query to be replaced with state string
-  const baiduquery = '苹果';
+    // getBaidu to be called with state string
+  const engine = req.query.engine;
+  const baiduquery = req.query.baiduquery;
   const api_key = req.query.api_key;
   const url = `https://serpapi.com/search.json?engine=${engine}&q=${baiduquery}&api_key=${api_key}`;
 
@@ -20,7 +19,7 @@ function getBaidu(req, res, next){
 
 class Baidusearch{
   constructor(obj){
-    this.data = obj.data;
+    this.data = obj;
   }
 }
 

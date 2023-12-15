@@ -5,11 +5,11 @@ const cache = require('./cache');
 const jsoninq = require('./sample.json');
 
 function postTFinal(req, res, next){
-  // jsoninq to be replaced with state string
-  const jsoninqst = JSON.stringify(jsoninq)
-  const htmlt = `Translate the Chinese characters to English in the following json and output as the same, as json - ${jsoninqst}`;
-  const key = 'FinalT ' + htmlt;
-  const url = 'https://api.openai.com/v1/chat/completions' 
+  // postTFinal to be called with state string
+  // const jsoninqst = JSON.stringify(jsoninq)
+  const jsoninqst = JSON.stringify(req.query.tranquery.data.organic_results)
+  const key = 'FinalT ' + jsoninqst;
+  const url = 'https://translation.googleapis.com/language/translate/v2' 
 
   if (cache[key] && (Date.now() - cache[key].timestamp < 604800000)){
     console.log('Cache hit - pulling in cache data');
@@ -19,25 +19,20 @@ function postTFinal(req, res, next){
     console.log('Cache miss - submitting new request');
     axios.post(url, 
       {
-        "model": "gpt-3.5-turbo",
-        "messages": [
-          {
-            "role": "user",
-            "content": htmlt
-          }
-        ],
-        "temperature": 0.7
-      },
+        "q": [jsoninqst],
+        "source": "zh-CN",
+        "target": "en",
+        "format": "text"
+      }
+      ,
       {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + `${process.env.ChatGPT_CONN}`
+        'Authorization': 'Bearer ' + `${process.env.GCLOUD}`,
+        'x-goog-user-project': `${process.env.GOOGLE_PROJECT_ID}`,
+        'Content-Type': 'application/json; charset=utf-8'
       }
       })
-      .then(response => {
-        const searchResult = new FinalT(response);
-        res.status(200).send(searchResult);
-      })
+      .then(response => response.data.data.translations.map(finaltr => new FinalT(finaltr)))
       .then(formattedData => {
         cache[key] = {};
         cache[key].data = formattedData;
@@ -48,9 +43,10 @@ function postTFinal(req, res, next){
   }
 }
 
+//Output needs to be parsed and outer quotes removed, replace double-quotes with single
 class FinalT{
-    constructor(obj){
-      this.data = obj.data;
+    constructor(translation){
+      this.finaljson = translation.translatedText;
   }
 }
 

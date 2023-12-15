@@ -41,3 +41,5 @@ https://trello.com/b/u4raS9Mc/leap-the-wall
 ## Change Log
 
 2023-12-12 - Started build for server. Built funtioning query translation with ChatGPT.
+2023-12-13 - Functional Baidu API - concluded JSON output is best. Replaced ChatGPT with DeepL due to speed issues and cost.
+2023-12-14 - Replaced DeepL with Google Cloud Translate API due to formatting deformation of DeepL.
