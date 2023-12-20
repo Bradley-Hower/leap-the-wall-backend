@@ -2,9 +2,17 @@
 
 const axios = require('axios');
 const cache = require('./cache');
+// //REMOVE
+// const querytest = require('./querytest.json');
 
 function postTQuery(req, res, next){
-    // postTQuery to be called with state string
+  // //REMOVE - beginning
+  // let replied = new Chquery(querytest);
+  
+  // res.status(200).send(replied);
+
+  // //REMOVE - end
+
   const tranquery =  req.query.tranquery;
   const key = 'Tqueries ' + tranquery;
   const url = 'https://translation.googleapis.com/language/translate/v2';
@@ -18,8 +26,8 @@ function postTQuery(req, res, next){
     axios.post(url, 
       {
         "q": [tranquery],
-        "source": "zh-CN",
-        "target": "en",
+        "source": "en",
+        "target": "zh-CN",
         "format": "text"
       }
       ,
@@ -43,6 +51,9 @@ function postTQuery(req, res, next){
 
 class Chquery{
   constructor(translation){
+    // //REMOVE - beginning
+    // this.query = translation;
+    // //REMOVE - end
     this.query = translation.translatedText;
   }
 }

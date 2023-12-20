@@ -2,12 +2,22 @@
 
 const axios = require('axios');
 const cache = require('./cache');
-const jsoninq = require('./sample.json');
+// const jsoninq = require('./baidutest2.json');
 
 function postTFinal(req, res, next){
-  // postTFinal to be called with state string
-  // const jsoninqst = JSON.stringify(jsoninq)
-  const jsoninqst = JSON.stringify(req.query.tranquery.data.organic_results)
+  // //REMOVE - beginning
+  // const stringied = JSON.stringify(jsoninq);
+  // const rename_keys = (obj) => obj.replace(/(" )/g, '"');
+  // const fixed_keys = rename_keys(stringied);
+  // const parsed = JSON.parse(fixed_keys)
+  // let replied = parsed.map(output => new FinalT(output));
+  // let toparse = replied[0].finaljson
+  // res.status(200).send(toparse);
+  // //REMOVE - end
+
+  const jsoninqst = JSON.stringify(req.query.qs);
+  console.log(jsoninqst);
+
   const key = 'FinalT ' + jsoninqst;
   const url = 'https://translation.googleapis.com/language/translate/v2' 
 
@@ -32,7 +42,14 @@ function postTFinal(req, res, next){
         'Content-Type': 'application/json; charset=utf-8'
       }
       })
-      .then(response => response.data.data.translations.map(finaltr => new FinalT(finaltr)))
+      .then(response => {
+        const somedata = response.data
+        // const stringied = JSON.stringify(somedata);
+        // const rename_keys = (obj) => obj.replace(/(\" )/g, '"');
+        // const fixed_keys = rename_keys(stringied);
+        // const parsed = JSON.parse(fixed_keys);
+        const final = somedata.data.translations.map(tdquery => new FinalT(tdquery))
+        return final})
       .then(formattedData => {
         cache[key] = {};
         cache[key].data = formattedData;
@@ -46,6 +63,7 @@ function postTFinal(req, res, next){
 //Output needs to be parsed and outer quotes removed, replace double-quotes with single
 class FinalT{
     constructor(translation){
+      // this.finaljson = translation.finaljson;
       this.finaljson = translation.translatedText;
   }
 }
