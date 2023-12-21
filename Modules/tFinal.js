@@ -14,11 +14,10 @@ function postTFinal(req, res, next){
   // let toparse = replied[0].finaljson
   // res.status(200).send(toparse);
   // //REMOVE - end
+  const jsoninqst = req.query.qs;
+  const pn = req.query.pn;
 
-  const jsoninqst = JSON.stringify(req.query.qs);
-  console.log(jsoninqst);
-
-  const key = 'FinalT ' + jsoninqst;
+  const key = 'FinalT ' + jsoninqst + pn;
   const url = 'https://translation.googleapis.com/language/translate/v2' 
 
   if (cache[key] && (Date.now() - cache[key].timestamp < 604800000)){
@@ -29,7 +28,7 @@ function postTFinal(req, res, next){
     console.log('Cache miss - submitting new request');
     axios.post(url, 
       {
-        "q": [jsoninqst],
+        "q": jsoninqst,
         "source": "zh-CN",
         "target": "en",
         "format": "text"
@@ -44,11 +43,11 @@ function postTFinal(req, res, next){
       })
       .then(response => {
         const somedata = response.data
-        // const stringied = JSON.stringify(somedata);
-        // const rename_keys = (obj) => obj.replace(/(\" )/g, '"');
-        // const fixed_keys = rename_keys(stringied);
-        // const parsed = JSON.parse(fixed_keys);
-        const final = somedata.data.translations.map(tdquery => new FinalT(tdquery))
+        const stringied = JSON.stringify(somedata);
+        const rename_keys = (obj) => obj.replace(/(\" )/g, '"');
+        const fixed_keys = rename_keys(stringied);
+        const parsed = JSON.parse(fixed_keys);
+        const final = parsed.data.translations.map(tdquery => new FinalT(tdquery))
         return final})
       .then(formattedData => {
         cache[key] = {};

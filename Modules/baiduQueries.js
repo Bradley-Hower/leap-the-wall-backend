@@ -20,25 +20,26 @@ function getBaidu(req, res, next){
   
   const engine = 'Baidu';
   const baiduquery = req.query.baiduquery;
-  const url = `https://serpapi.com/search.json?engine=${engine}&q=${baiduquery}&api_key=${process.env.SERPAPI}`;
+  const pn = req.query.pn;
+  const url = `https://serpapi.com/search.json?engine=${engine}&pn=${pn}&rn=30&q=${baiduquery}&api_key=${process.env.SERPAPI}`;
 
   axios.get(url)
     .then(response => {
 
       const somedata = response.data;
-      const stringied = JSON.stringify(somedata);
-      const rename_keys = (obj) => obj.replace(/“/g, '-');
-      const fixed = rename_keys(stringied);
-      const rename_keys2 = (obj) => obj.replace(/”/g, '-');
-      const fixed2 = rename_keys2(fixed);
-      const parsed = JSON.parse(fixed2);
-      console.log(parsed);
+      // const stringied = JSON.stringify(somedata);
+      // const rename_keys = (obj) => obj.replace(/“/g, '-');
+      // const fixed = rename_keys(stringied);
+      // const rename_keys2 = (obj) => obj.replace(/”/g, '-');
+      // const fixed2 = rename_keys2(fixed);
+      // const parsed = JSON.parse(fixed2);
+      // console.log(parsed);
 
-      const searchResult = new Baidusearch(parsed);
+      const searchResult = new Baidusearch(somedata);
       return searchResult;
       // const baidureturn = parsed.data.data.translations.map(tdquery => new Baidusearch(tdquery))
     })
-    .then(formattedData => res.status(200).send(formattedData))
+    .then(formattedData => res.status(200).send(JSON.stringify(formattedData)))
     .catch(err => next(err));
 }
 
