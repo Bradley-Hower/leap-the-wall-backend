@@ -5,8 +5,8 @@ const Search = require('../Model/search')
 const searchHandler = {};
 
 searchHandler.getSearches = function(req, res, next){
-
-  Search.find(query)
+  let queryObject = {email: req.user.email}
+  Search.find(queryObject)
     .then(data => res.status(200).send(data))
     .catch(err => next(err));
 }

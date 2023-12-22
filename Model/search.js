@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const searchSchema = new Schema ({
+  email: String,
   timestamp: String,
   query: String,
   data: Array
