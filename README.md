@@ -10,7 +10,10 @@ Version: 1.0
 
 Good day. This project is created using the Serpapi Baidu API and the Google Translate API. It took quite some effort to get this working due to syntax parsing errors, json parsing errors, the confusing documentation by Google, and due to their bandwidth limitations. All issues were successfully resolved by sending each element as individual packets. This actually is a great advantage as it makes page loads much quicker and more responsive. Note, sometimes there are fetching synchrocy errors which can cause unexpected results. This is a great target for the next update. For the best results, use Chrome, as it will render images in their current format with no issues. 
 
-Up and running at [leap-the-wall.netlify.com.](https://leap-the-wall.netlify.app/).
+Find at [leap-the-wall.netlify.com.](https://leap-the-wall.netlify.app/).
+
+(Not currently running due to need to integrate Google CLI. Was able to get working with temporary key which only lasts one hour. Update in the works.)
+
 
 ## Presentation Slides
 
