@@ -6,21 +6,15 @@ Codefellows Code 301 Final Project
 
 Version: 1.0
 
-## Work Plan
+![Frontend Repository](https://github.com/Bradley-Hower/leap-the-wall-frontend)
 
-Daily - 9 AM to 9 PM
+Good day. This project is created using the Serpapi Baidu API and the Google Translate API. It took quite some effort to get this working due to syntax parsing errors, json parsing errors, the confusing documentation by Google, and due to their bandwidth limitations. All issues were successfully resolved by sending each element as individual packets. This actually is a great advantage as it makes page loads much quicker and more responsive. Note, sometimes there are fetching synchrocy errors which can cause unexpected results. This is a great target for the next update. For the best results, use Chrome, as it will render images in their current format with no issues. 
+
+Up and running at [leap-the-wall.netlify.com.](https://leap-the-wall.netlify.app/).
 
 ## Presentation Slides
 
 https://docs.google.com/presentation/d/1Tg3FLtJLmpOxLrb8FgmjtAPkoEF6uPut1o9QKtoSNCQ/edit?usp=sharing
-
-## Git Flow
-
-Being that this is a solo project, I will commiting to the "working" branch. After each major checkpoint, I will PR to main.
-
-## Project Management
-
-https://trello.com/b/u4raS9Mc/leap-the-wall
 
 ## Wireframes
 
