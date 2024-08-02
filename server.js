@@ -3,7 +3,8 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const postTQuery = require('./Modules/tQueries');
+// const postTQuery = require('./Modules/tQueries');
+const postTQuery = require('./Modules/newgoog');
 const getBaidu = require('./Modules/baiduQueries');
 const postTFinal =  require('./Modules/tFinal')
 const mongoose = require('mongoose');
